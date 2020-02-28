@@ -16,7 +16,7 @@
 
   @auth()
     <div class="mt-4">
-      <form method="POST" action="{{ route('threads.reply.store', $thread->id) }}">
+      <form method="POST" action="{{ route('threads.reply.store', [$thread->channel->slug, $thread->id]) }}">
         @csrf
         <div class="mb-4">
           <label for="body">

@@ -1,5 +1,6 @@
 <?php
 
+use App\Channel;
 use App\Reply;
 use App\Thread;
 use Illuminate\Database\Seeder;
@@ -13,10 +14,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        factory(Thread::class, 50)->create()->each(function ($thread) {
-            factory(Reply::class, 10)->create([
-                'thread_id' => $thread->id
-            ]);
+        factory(Channel::class, 5)->create()->each(function ($channel) {
+            factory(Thread::class, 10)->create([
+                'channel_id' => $channel->id
+            ])->each(function ($thread) {
+                factory(Reply::class, 5)->create([
+                    'thread_id' => $thread->id
+                ]);
+            });
         });
+
     }
 }

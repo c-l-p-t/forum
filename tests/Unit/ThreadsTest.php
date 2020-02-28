@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Channel;
 use App\Thread;
 use App\User;
 use Illuminate\Database\Eloquent\Collection;
@@ -27,6 +28,12 @@ class ThreadsTest extends TestCase
     }
 
     /** @test */
+    public function it_has_a_path()
+    {
+        $this->assertEquals(route('threads.show', [$this->thread->channel->slug, $this->thread->id]), $this->thread->path());
+    }
+
+    /** @test */
     public function it_has_replies()
     {
         $this->assertInstanceOf(Collection::class, $this->thread->replies);
@@ -47,5 +54,11 @@ class ThreadsTest extends TestCase
         ]);
 
         $this->assertCount(1, $this->thread->replies);
+    }
+
+    /** @test */
+    public function it_belongs_to_a_channel()
+    {
+        $this->assertInstanceOf(Channel::class, $this->thread->channel);
     }
 }
