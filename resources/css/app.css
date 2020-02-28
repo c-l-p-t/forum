@@ -1,0 +1,11 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+.button {
+    @apply inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md transition duration-150 ease-in-out;
+}
+
+.button:focus {
+    @apply outline-none;
+}
