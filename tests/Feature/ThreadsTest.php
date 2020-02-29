@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Channel;
 use App\Reply;
 use App\Thread;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -69,5 +70,50 @@ class ThreadsTest extends TestCase
         ]);
 
         $this->get($thread->path())->assertSee($reply->body);
+    }
+
+    /** @test */
+    public function a_thread_requires_a_title()
+    {
+        $this->publishThread([
+            'title' => null
+        ])->assertSessionHasErrors('title');
+
+    }
+
+    /** @test */
+    public function a_thread_requires_a_body()
+    {
+        $this->publishThread([
+            'body' => null
+        ])->assertSessionHasErrors('body');
+
+    }
+
+    /** @test */
+    public function a_thread_requires_a_valid_channel()
+    {
+        $this->publishThread([
+            'channel_id' => null
+        ])->assertSessionHasErrors('channel_id');
+
+        $channel = factory(Channel::class)->create();
+
+        $this->publishThread([
+            'channel_id' => $channel->id
+        ])->assertSessionHasNoErrors();
+
+        $this->publishThread([
+            'channel_id' => $channel->id + 1
+        ])->assertSessionHasErrors('channel_id');
+    }
+
+    protected function publishThread($overrides = [])
+    {
+        $this->withExceptionHandling()->signIn();
+
+        $thread = factory(Thread::class)->make($overrides);
+
+        return $this->post('/threads', $thread->toArray());
     }
 }
