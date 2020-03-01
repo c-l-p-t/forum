@@ -116,4 +116,18 @@ class ThreadsTest extends TestCase
 
         return $this->post('/threads', $thread->toArray());
     }
+
+    /** @test */
+    public function a_user_can_filter_threads_by_a_channel()
+    {
+        $channel = factory(Channel::class)->create();
+
+        $threadInChannel = factory(Thread::class)->create([
+            'channel_id' => $channel->id,
+        ]);
+
+        $threadNotInChannel = factory(Thread::class)->create();
+
+        $this->get('threads/' . $channel->slug)->assertSee($threadInChannel->title)->assertDontSee($threadNotInChannel->title);
+    }
 }

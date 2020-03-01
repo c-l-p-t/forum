@@ -21,12 +21,16 @@ class ThreadController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Channel $channel
      * @return Factory|View
      */
-    public function index()
+    public function index(Channel $channel)
     {
-        $threads = Thread::all();
-
+        if ($channel->exists) {
+            $threads = $channel->threads;
+        } else {
+            $threads = Thread::all();
+        }
         return view('thread.index', compact('threads'));
     }
 
