@@ -27,9 +27,9 @@ class ThreadController extends Controller
     public function index(Channel $channel)
     {
         if ($channel->exists) {
-            $threads = $channel->threads;
+            $threads = $channel->threads()->orderByDesc('created_at')->get();
         } else {
-            $threads = Thread::all();
+            $threads = Thread::query()->orderByDesc('created_at')->get();
         }
         return view('thread.index', compact('threads'));
     }

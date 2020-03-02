@@ -12,6 +12,10 @@
                  href="{{ route('threads.index') }}">
                 {{ __('All Threads') }}
               </a>
+              <a class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 transition ease-in-out duration-150"
+                 href="{{ route('threads.create') }}">
+                {{ __('Create Thread') }}
+              </a>
               <div @click.away="open = false"
                    class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 transition ease-in-out duration-150 relative"
                    x-data="{ open: false }">
@@ -28,7 +32,7 @@
                      x-transition:leave-end="transform opacity-0 scale-95"
                      class="origin-top-right absolute left-0 mt-2 -mr-1 w-48 rounded-md shadow-lg">
                   <div class="py-1 rounded-md bg-white shadow-xs">
-                    @foreach(\App\Channel::all() as $channel)
+                    @foreach($channels as $channel)
                       <a href="/threads/{{ $channel->slug }}"
                          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition ease-in-out duration-150">
                         {{ $channel->name }}
