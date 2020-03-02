@@ -8,10 +8,35 @@
           </div>
           <div class="hidden md:block">
             <div class="ml-10 flex items-baseline">
-              <a class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 transition ease-in-out duration-150"
-                 href="{{ route('threads.index') }}">
-                {{ __('All Threads') }}
-              </a>
+              <div @click.away="open = false"
+                   class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 transition ease-in-out duration-150 relative"
+                   x-data="{ open: false }">
+                <div @click="open = !open">
+                  <button>
+                    Browser
+                  </button>
+                </div>
+                <div x-show="open" x-transition:enter="transition ease-out duration-100"
+                     x-transition:enter-start="transform opacity-0 scale-95"
+                     x-transition:enter-end="transform opacity-100 scale-100"
+                     x-transition:leave="transition ease-in duration-75"
+                     x-transition:leave-start="transform opacity-100 scale-100"
+                     x-transition:leave-end="transform opacity-0 scale-95"
+                     class="origin-top-right absolute left-0 mt-2 -mr-1 w-48 rounded-md shadow-lg">
+                  <div class="py-1 rounded-md bg-white shadow-xs">
+                    <a href="{{ route('threads.index') }}"
+                       class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition ease-in-out duration-150">
+                      {{ __('All Threads') }}
+                    </a>
+                    @auth()
+                      <a href="/threads/?by={{ auth()->user()->name }}"
+                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition ease-in-out duration-150">
+                        {{ auth()->user()->name }}
+                      </a>
+                    @endauth
+                  </div>
+                </div>
+              </div>
               <a class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 transition ease-in-out duration-150"
                  href="{{ route('threads.create') }}">
                 {{ __('Create Thread') }}

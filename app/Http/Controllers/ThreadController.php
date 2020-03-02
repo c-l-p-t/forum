@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Channel;
 use App\Thread;
+use App\User;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -22,15 +23,24 @@ class ThreadController extends Controller
      * Display a listing of the resource.
      *
      * @param Channel $channel
+     *
      * @return Factory|View
      */
     public function index(Channel $channel)
     {
         if ($channel->exists) {
-            $threads = $channel->threads()->orderByDesc('created_at')->get();
+            $threads = $channel->threads()->latest();
         } else {
-            $threads = Thread::query()->orderByDesc('created_at')->get();
+            $threads = Thread::query()->latest();
         }
+
+        if (request()->has('by')) {
+            $userId = User::where('name', \request()->input('by'))->firstOrFail()->id;
+            $threads->where('user_id', $userId);
+        }
+
+        $threads = $threads->get();
+
         return view('thread.index', compact('threads'));
     }
 
@@ -97,8 +107,8 @@ class ThreadController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request  $request
-     * @param Thread  $thread
+     * @param Request $request
+     * @param Thread $thread
      *
      * @return Response
      */
@@ -110,7 +120,7 @@ class ThreadController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Thread  $thread
+     * @param Thread $thread
      *
      * @return Response
      */
