@@ -9,3 +9,27 @@
 .button:focus {
     @apply outline-none;
 }
+
+.pagination {
+    @apply inline-flex items-center;
+}
+
+.pagination .page-item .page-link {
+    @apply px-2 py-1 border;
+}
+
+.pagination .page-item a.page-link {
+    @apply text-blue-500;
+}
+
+.pagination .page-item:first-child .page-link {
+    @apply rounded-l border-r-0;
+}
+
+.pagination .page-item:last-child .page-link {
+    @apply rounded-r border-l-0;
+}
+
+.pagination .page-item.active .page-link {
+    @apply bg-blue-500 text-white border-blue-500;
+}

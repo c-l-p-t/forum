@@ -8,10 +8,10 @@
           </div>
           <div class="hidden md:block">
             <div class="ml-10 flex items-baseline">
-              <div @click.away="open = false"
+              <div @mouseover.away="open = false"
                    class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 transition ease-in-out duration-150 relative"
                    x-data="{ open: false }">
-                <div @click="open = !open">
+                <div @mouseover="open = !open">
                   <button>
                     Browser
                   </button>
@@ -41,10 +41,10 @@
                  href="{{ route('threads.create') }}">
                 {{ __('Create Thread') }}
               </a>
-              <div @click.away="open = false"
+              <div @mouseover.away="open = false"
                    class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 transition ease-in-out duration-150 relative"
                    x-data="{ open: false }">
-                <div @click="open = !open">
+                <div @mouseover="open = !open">
                   <button>
                     Channel
                   </button>
