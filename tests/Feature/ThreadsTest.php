@@ -149,4 +149,23 @@ class ThreadsTest extends TestCase
             ->assertSee($threadByJohn->title)
             ->assertDontSee($threadNotByJohn->title);
     }
+
+    /** @test */
+    public function a_user_can_filter_threads_by_popular()
+    {
+        $threadHasNoReply = factory(Thread::class)->create();
+
+        $threadHasOneReply = factory(Thread::class)->create();
+        factory(Reply::class)->create(['thread_id' => $threadHasOneReply->id]);
+
+        $threadHasTwoReply = factory(Thread::class)->create();
+        factory(Reply::class, 2)->create(['thread_id' => $threadHasTwoReply->id]);
+
+        $threadHasThreeReply = factory(Thread::class)->create();
+        factory(Reply::class, 3)->create(['thread_id' => $threadHasThreeReply->id]);
+
+        $response = $this->getJson('/threads/?popular=1')->json();
+
+        $this->assertEquals([3, 2, 1, 0], array_column($response, 'replies_count'));
+    }
 }

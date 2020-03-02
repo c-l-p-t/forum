@@ -34,6 +34,10 @@
                         {{ auth()->user()->name }}
                       </a>
                     @endauth
+                    <a href="/threads/?popular=1"
+                       class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition ease-in-out duration-150">
+                      {{ __('Popular Threads') }}
+                    </a>
                   </div>
                 </div>
               </div>
