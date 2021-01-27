@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Reply;
-use App\Thread;
+use App\Models\Reply;
+use App\Models\Thread;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -22,9 +22,9 @@ class ParticipateInForumTest extends TestCase
     public function guest_can_not_participate_in_forum_threads()
     {
         $this->expectException(AuthenticationException::class);
-        $thread = factory(Thread::class)->create();
+        $thread = Thread::factory()->create();
 
-        $reply = factory(Reply::class)->make();
+        $reply = Reply::factory()->make();
         $this->post($thread->path() . '/replies', $reply->toArray());
     }
 
@@ -33,9 +33,9 @@ class ParticipateInForumTest extends TestCase
     {
         $this->signIn();
 
-        $thread = factory(Thread::class)->create();
+        $thread = Thread::factory()->create();
 
-        $reply = factory(Reply::class)->make();
+        $reply = Reply::factory()->make();
         $this->post($thread->path() . '/replies', $reply->toArray());
 
         $this->get($thread->path())->assertSee($reply->body);
@@ -46,9 +46,9 @@ class ParticipateInForumTest extends TestCase
     {
         $this->withExceptionHandling()->signIn();
 
-        $thread = factory(Thread::class)->create();
+        $thread = Thread::factory()->create();
 
-        $reply = factory(Reply::class)->make([
+        $reply = Reply::factory()->make([
             'body' => null
         ]);
         $this->post($thread->path() . '/replies', $reply->toArray())->assertSessionHasErrors('body');

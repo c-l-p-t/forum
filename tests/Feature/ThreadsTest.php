@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Channel;
-use App\Reply;
-use App\Thread;
-use App\User;
+use App\Models\Channel;
+use App\Models\Reply;
+use App\Models\Thread;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -26,7 +26,7 @@ class ThreadsTest extends TestCase
 
         $this->get('threads/create')->assertRedirect('/login');
 
-        $thread = factory(Thread::class)->make();
+        $thread = Thread::factory()->make();
 
         $this->post('/threads', $thread->toArray())->assertRedirect('/login');
     }
@@ -38,7 +38,7 @@ class ThreadsTest extends TestCase
 
         $this->get('threads/create')->assertOk();
 
-        $thread = factory(Thread::class)->make();
+        $thread = Thread::factory()->make();
 
         $this->followingRedirects();
         $this->post('/threads', $thread->toArray())
@@ -49,14 +49,14 @@ class ThreadsTest extends TestCase
     /** @test */
     public function a_user_can_view_all_threads()
     {
-        $thread = factory(Thread::class)->create();
+        $thread = Thread::factory()->create();
         $this->get('/threads')->assertSee($thread->title);
     }
 
     /** @test */
     public function a_user_can_view_single_thread()
     {
-        $thread = factory(Thread::class)->create();
+        $thread = Thread::factory()->create();
         $this->get($thread->path())
             ->assertSee($thread->title)
             ->assertSee($thread->body);
@@ -65,8 +65,8 @@ class ThreadsTest extends TestCase
     /** @test */
     public function a_user_can_view_replies_of_a_thread()
     {
-        $thread = factory(Thread::class)->create();
-        $reply = factory(Reply::class)->create([
+        $thread = Thread::factory()->create();
+        $reply = Reply::factory()->create([
             'thread_id' => $thread->id,
         ]);
 
@@ -98,7 +98,7 @@ class ThreadsTest extends TestCase
             'channel_id' => null
         ])->assertSessionHasErrors('channel_id');
 
-        $channel = factory(Channel::class)->create();
+        $channel = Channel::factory()->create();
 
         $this->publishThread([
             'channel_id' => $channel->id
@@ -113,7 +113,7 @@ class ThreadsTest extends TestCase
     {
         $this->withExceptionHandling()->signIn();
 
-        $thread = factory(Thread::class)->make($overrides);
+        $thread = Thread::factory()->make($overrides);
 
         return $this->post('/threads', $thread->toArray());
     }
@@ -121,13 +121,13 @@ class ThreadsTest extends TestCase
     /** @test */
     public function a_user_can_filter_threads_by_a_channel()
     {
-        $channel = factory(Channel::class)->create();
+        $channel = Channel::factory()->create();
 
-        $threadInChannel = factory(Thread::class)->create([
+        $threadInChannel = Thread::factory()->create([
             'channel_id' => $channel->id,
         ]);
 
-        $threadNotInChannel = factory(Thread::class)->create();
+        $threadNotInChannel = Thread::factory()->create();
 
         $this->get('threads/' . $channel->slug)->assertSee($threadInChannel->title)->assertDontSee($threadNotInChannel->title);
     }
@@ -135,15 +135,15 @@ class ThreadsTest extends TestCase
     /** @test */
     public function a_user_can_filter_threads_by_any_username()
     {
-        $this->signIn(factory(User::class)->create([
+        $this->signIn(User::factory()->create([
             'name' => 'JohnDoe',
         ]));
 
-        $threadByJohn = factory(Thread::class)->create([
+        $threadByJohn = Thread::factory()->create([
             'user_id' => auth()->user()->id,
         ]);
 
-        $threadNotByJohn = factory(Thread::class)->create();
+        $threadNotByJohn = Thread::factory()->create();
 
         $this->get('/threads/?by=' . auth()->user()->name)
             ->assertSee($threadByJohn->title)
@@ -153,16 +153,16 @@ class ThreadsTest extends TestCase
     /** @test */
     public function a_user_can_filter_threads_by_popular()
     {
-        $threadHasNoReply = factory(Thread::class)->create();
+        $threadHasNoReply = Thread::factory()->create();
 
-        $threadHasOneReply = factory(Thread::class)->create();
-        factory(Reply::class)->create(['thread_id' => $threadHasOneReply->id]);
+        $threadHasOneReply = Thread::factory(Thread::class)->create();
+        Reply::factory()->create(['thread_id' => $threadHasOneReply->id]);
 
-        $threadHasTwoReply = factory(Thread::class)->create();
-        factory(Reply::class, 2)->create(['thread_id' => $threadHasTwoReply->id]);
+        $threadHasTwoReply = Thread::factory(Thread::class)->create();
+        Reply::factory(2)->create(['thread_id' => $threadHasTwoReply->id]);
 
-        $threadHasThreeReply = factory(Thread::class)->create();
-        factory(Reply::class, 3)->create(['thread_id' => $threadHasThreeReply->id]);
+        $threadHasThreeReply = Thread::factory(Thread::class)->create();
+        Reply::factory(3)->create(['thread_id' => $threadHasThreeReply->id]);
 
         $response = $this->getJson('/threads/?popular=1')->json();
 

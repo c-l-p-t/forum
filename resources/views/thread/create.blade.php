@@ -1,12 +1,12 @@
-@extends('layouts.app')
+<x-app-layout>
 
-@section('content')
-  <div class="bg-white shadow overflow-hidden rounded-md">
-    <div class="bg-gray-100 px-4 py-5 border-b border-gray-200 sm:px-6">
-      <h3 class="text-lg leading-6 font-medium text-gray-900">
-        Create new thread
-      </h3>
-    </div>
+  <x-slot name="header">
+    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+      {{ __('Create new thread') }}
+    </h2>
+  </x-slot>
+
+  <div class="max-w-7xl mx-auto mb-4 overflow-hidden shadow">
     <div class="bg-white p-4">
       <div class="mt-4">
         <form method="POST" action="{{ route('threads.store') }}">
@@ -62,4 +62,4 @@
     </div>
   </div>
 
-@endsection
+</x-app-layout>

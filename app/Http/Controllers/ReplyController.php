@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Channel;
-use App\Reply;
-use App\Thread;
+use App\Models\Channel;
+use App\Models\Reply;
+use App\Models\Thread;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

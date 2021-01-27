@@ -1,10 +1,11 @@
-@extends('layouts.app')
+<x-app-layout>
+  <x-slot name="header">
+    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+      {{ __('Forum Threads') }}
+    </h2>
+  </x-slot>
 
-@section('content')
-  <div class="bg-white shadow overflow-hidden rounded-md">
-    <div class="bg-gray-100 px-4 py-5 border-b border-gray-200 sm:px-6">
-      <h3 class="text-lg leading-6 font-medium text-gray-900">Forum Threads</h3>
-    </div>
+  <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 bg-white shadow overflow-hidden rounded-md">
     <div class="bg-white p-4">
       @foreach($threads as $thread)
         <article>
@@ -42,4 +43,4 @@
       @endforeach
     </div>
   </div>
-@endsection
+</x-app-layout>

@@ -1,8 +1,10 @@
 <?php
 
-use App\Channel;
-use App\Reply;
-use App\Thread;
+namespace Database\Seeders;
+
+use App\Models\Channel;
+use App\Models\Reply;
+use App\Models\Thread;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,11 +16,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        factory(Channel::class, 5)->create()->each(function ($channel) {
-            factory(Thread::class, 10)->create([
+        Channel::factory()->create()->each(function ($channel) {
+            Thread::factory()->create([
                 'channel_id' => $channel->id
             ])->each(function ($thread) {
-                factory(Reply::class, 5)->create([
+                Reply::factory()->create([
                     'thread_id' => $thread->id
                 ]);
             });

@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
-use App\Channel;
-use App\Thread;
-use App\User;
+use App\Models\Channel;
+use App\Models\Thread;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -24,7 +24,7 @@ class ThreadsTest extends TestCase
         parent::setUp();
         $this->withoutExceptionHandling();
 
-        $this->thread = factory(Thread::class)->create();
+        $this->thread = Thread::factory(Thread::class)->create();
     }
 
     /** @test */

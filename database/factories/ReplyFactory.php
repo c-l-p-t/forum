@@ -1,21 +1,36 @@
 <?php
 
-/** @var Factory $factory */
+namespace Database\Factories;
 
-use App\Reply;
-use App\Thread;
-use App\User;
-use Faker\Generator as Faker;
-use Illuminate\Database\Eloquent\Factory;
+use App\Models\Reply;
+use App\Models\Thread;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Reply::class, function (Faker $faker) {
-    return [
-        'thread_id' => function () {
-            return factory(Thread::class)->create()->id;
-        },
-        'user_id' => function () {
-            return factory(User::class)->create()->id;
-        },
-        'body' => $faker->paragraph,
-    ];
-});
+class ReplyFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Reply::class;
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'thread_id' => function () {
+                return Thread::factory()->create()->id;
+            },
+            'user_id' => function () {
+                return User::factory()->create()->id;
+            },
+            'body' => $this->faker->paragraph,
+        ];
+    }
+}

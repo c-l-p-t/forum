@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Reply;
-use App\User;
+use App\Models\Reply;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -23,7 +23,7 @@ class RepliesTest extends TestCase
         parent::setUp();
         $this->withoutExceptionHandling();
 
-        $this->reply = factory(Reply::class)->create();
+        $this->reply = Reply::factory(Reply::class)->create();
     }
 
     /** @test */

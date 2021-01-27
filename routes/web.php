@@ -4,7 +4,7 @@ Route::get('/', function () {
     return redirect(route('threads.index'));
 });
 
-Auth::routes();
+require __DIR__.'/auth.php';
 
 Route::get('/home', 'HomeController@index')->name('home');
 

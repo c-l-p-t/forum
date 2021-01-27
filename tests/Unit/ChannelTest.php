@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Channel;
+use App\Models\Channel;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -14,7 +14,7 @@ class ChannelTest extends TestCase
     /** @test */
     public function it_consists_of_threads()
     {
-        $channel = factory(Channel::class)->create();
+        $channel = Channel::factory()->create();
 
         $this->assertInstanceOf(Collection::class, $channel->threads);
     }
